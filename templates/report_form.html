@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Report Incident{% endblock %}
+{% block content %}
+  <h2>Report an Incident</h2>
+  <div class="card">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% render_field field class="form-control" %}
+        <div style="color:#a33">{{ field.errors }}</div>
+      {% endfor %}
+      <div style="margin-top:10px;">
+        <button type="submit">Submit</button>
+        <button type="reset" class="small-btn">Clear</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

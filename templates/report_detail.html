@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Report - {{ report.title }}{% endblock %}
+{% block content %}
+  <h2>{{ report.title }}</h2>
+  <p><strong>Type:</strong> {{ report.get_crime_type_display }} | <strong>Status:</strong> {{ report.get_status_display }}</p>
+  <p><strong>State:</strong> {{ report.state }} | <strong>LGA:</strong> {{ report.lga }}</p>
+  {% if report.image %}
+    <div style="margin:10px 0;">
+      <img src="{{ report.image.url }}" alt="image" style="max-width:360px;border:1px solid #ddd;">
+    </div>
+  {% endif %}
+  <div class="card">
+    <h4>Incident Description</h4>
+    <p>{{ report.incident_description|linebreaks }}</p>
+  </div>
+
+  {% if user.is_staff %}
+  <div class="card">
+    <h4>Progress Notes</h4>
+    <p>{{ report.progress_notes|default:"No notes yet." }}</p>
+  </div>
+  {% endif %}
+{% endblock %}

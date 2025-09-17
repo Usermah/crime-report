@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+  <h2>Admin Dashboard - Crime Demographics</h2>
+  <form method="get" style="margin-bottom:12px;">
+    <input type="text" name="q" placeholder="Search title or description" value="{{ request.GET.q|default:'' }}">
+    <button type="submit">Search</button>
+  </form>
+
+  <table style="width:100%; border-collapse:collapse;">
+    <thead>
+      <tr style="background:#f1f1f1;">
+        <th>#</th><th>Title</th><th>Type</th><th>State</th><th>LGA</th><th>Status</th><th>Reporter</th><th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reports %}
+        <tr style="border-top:1px solid #eee;">
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{% url 'report_detail' r.pk %}">{{ r.title }}</a></td>
+          <td>{{ r.get_crime_type_display }}</td>
+          <td>{{ r.state }}</td>
+          <td>{{ r.lga }}</td>
+          <td>{{ r.get_status_display }}</td>
+          <td>
+            {% if r.reporter %}
+              {{ r.reporter.username }}
+            {% else %}
+              Anonymous
+            {% endif %}
+          </td>
+          <td>{{ r.created_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="8">No reports found</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
