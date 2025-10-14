@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Home - e-Crime Reporting{% endblock %}
+
 {% block content %}
   <div style="display:flex;gap:16px;align-items:center;">
     <div style="flex:1">
@@ -17,8 +18,15 @@
   <div class="report-list">
     {% for r in latest %}
       <div class="report-item">
-        <h4><a href="{% url 'report_detail' r.pk %}">{{ r.title }}</a></h4>
-        <p><strong>Type:</strong> {{ r.get_crime_type_display }} | <strong>Status:</strong> {{ r.get_status_display }}</p>
+        <h4><a href="{% url 'report_detail' r.pk %}">{{ r }}</a></h4>
+        <p><strong>Type:</strong> {{ r.get_crime_type_display }} | 
+           <strong>Status:</strong> 
+           {% if r.status == 'new' %}
+             Under Review
+           {% else %}
+             Reviewed
+           {% endif %}
+        </p>
         <p style="font-size:0.9rem">{{ r.incident_description|truncatechars:120 }}</p>
         <small>Reported: {{ r.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
       </div>
